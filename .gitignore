@@ -1,0 +1,32 @@
+# .NET build artifacts
+bin/
+obj/
+
+# Rider / VS Code / VS IDE
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build caches
+*.dbmdl
+*.bak
+*.log
+*.cache
+*.pdb
+*.ilk
+
+# Auto-generated files
+*.g.cs
+*.AssemblyInfo.cs
+*.AssemblyInfoInputs.cache
+*.AssemblyReference.cache
+
+# npm/pnpm/yarn (if using frontend)
+node_modules/
+dist/
+build/
+
+API/Dating.*
