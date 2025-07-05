@@ -1,8 +1,12 @@
+# =========================
 # .NET build artifacts
+# =========================
 bin/
 obj/
 
-# Rider / VS Code / VS IDE
+# =========================
+# IDEs (VS Code, Rider, etc.)
+# =========================
 .vscode/
 .idea/
 *.suo
@@ -10,7 +14,9 @@ obj/
 *.userosscache
 *.sln.docstates
 
-# Build caches
+# =========================
+# .NET build caches
+# =========================
 *.dbmdl
 *.bak
 *.log
@@ -18,15 +24,56 @@ obj/
 *.pdb
 *.ilk
 
-# Auto-generated files
+# =========================
+# .NET auto-generated files
+# =========================
 *.g.cs
 *.AssemblyInfo.cs
 *.AssemblyInfoInputs.cache
 *.AssemblyReference.cache
 
-# npm/pnpm/yarn (if using frontend)
+# =========================
+# npm/pnpm/yarn (Angular/frontend)
+# =========================
 node_modules/
 dist/
 build/
+.cache/
+.angular/
+.angular/cache/
+.angular/config.json
+.angular/local/
 
+# =========================
+# Angular-specific tooling/cache
+# =========================
+.sass-cache/
+.npm/
+.eslintcache
+.yarn/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.yarn/patches/
+.yarn/plugins/
+.yarn/releases/
+.yarn/sdks/
+.yarn/versions/
+.pnp.*
+connect.lock
+libpeerconnection.log
+testem.log
+coverage/
+typings/
+
+# =========================
+# Output from dev servers
+# =========================
+*.tsbuildinfo
+*.webp
+
+# =========================
+# Misc
+# =========================
 API/Dating.*
