@@ -27,7 +27,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
             DisplayName = registerDto.DisplayName,
             PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerDto.Password)),
             PasswordSalt = hmac.Key,
-            CreatedAt = DateTime.UtcNow
+            Created = DateTime.UtcNow
         };
 
         context.Users.Add(user);
