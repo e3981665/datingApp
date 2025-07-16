@@ -18,3 +18,10 @@ export type Photo = {
   created: string;
   memberId: string;
 };
+
+export type EditableMember = {
+  displayName: string;
+  description?: string;
+  city: string;
+  country: string;
+};
