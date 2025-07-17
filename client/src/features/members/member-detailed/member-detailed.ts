@@ -41,4 +41,20 @@ export class MemberDetailed implements OnInit {
         },
       });
   }
+
+  onCancelClicked(): void {
+    if (!this.memberService.editMode()) {
+      this.memberService.editMode.set(true);
+      return;
+    }
+
+    const currentPath = this.route.firstChild?.routeConfig?.path;
+
+    if (currentPath !== 'profile') {
+      this.memberService.editMode.set(false);
+      return;
+    }
+
+    this.memberService.cancelClicked.set(true);
+  }
 }

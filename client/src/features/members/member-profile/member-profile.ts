@@ -1,9 +1,12 @@
 import {
   Component,
+  effect,
+  EnvironmentInjector,
   HostListener,
   inject,
   OnDestroy,
   OnInit,
+  runInInjectionContext,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -39,6 +42,15 @@ export class MemberProfile implements OnInit, OnDestroy {
     city: '',
     country: '',
   };
+  protected originalMember: EditableMember | null = null;
+
+  constructor() {
+    effect(() => {
+      if (this.memberService.cancelClicked()) {
+        this.handleCancelRequest();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.editableMember = {
@@ -47,6 +59,7 @@ export class MemberProfile implements OnInit, OnDestroy {
       city: this.memberService.member()?.city || '',
       country: this.memberService.member()?.country || '',
     };
+    this.originalMember = { ...this.editableMember };
   }
 
   ngOnDestroy(): void {
@@ -80,5 +93,30 @@ export class MemberProfile implements OnInit, OnDestroy {
         this.toastService.error('Failed to update profile: ' + error.message);
       },
     });
+  }
+
+  private handleCancelRequest(): void {
+    this.memberService.cancelClicked.set(false); // reset signal
+
+    if (this.isDirty()) {
+      const confirmCancel = confirm(
+        'You have unsaved changes. Are you sure you want to cancel?'
+      );
+      if (!confirmCancel) return;
+    }
+
+    this.resetForm();
+    this.memberService.editMode.set(false);
+  }
+
+  private isDirty(): boolean {
+    return this.editForm?.dirty ?? false;
+  }
+
+  private resetForm() {
+    if (this.originalMember) {
+      this.editableMember = { ...this.originalMember };
+      this.editForm?.resetForm(this.originalMember);
+    }
   }
 }

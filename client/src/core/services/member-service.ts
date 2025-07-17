@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { EditableMember, Member, Photo } from '../../types/member';
-import { AccountService } from './account-service';
 import { tap } from 'rxjs';
 
 @Injectable({
@@ -11,8 +10,10 @@ import { tap } from 'rxjs';
 export class MemberService {
   private http = inject(HttpClient);
   private baseUrl = environment.apiUrl;
-  editMode = signal(false);
-  member = signal<Member | null>(null);
+  public editMode = signal(false);
+  public member = signal<Member | null>(null);
+  public loading = signal<boolean>(false);
+  public cancelClicked = signal(false);
 
   getMembers() {
     return this.http.get<Member[]>(this.baseUrl + 'members');
@@ -37,5 +38,22 @@ export class MemberService {
     return this.http.put<Member>(this.baseUrl + 'members', member, {
       headers,
     });
+  }
+
+  uploadPhoto(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<Photo>(this.baseUrl + 'members/add-photo', formData);
+  }
+
+  setMainPhoto(photo: Photo) {
+    return this.http.put<Photo>(
+      this.baseUrl + 'members/set-main-photo/' + photo.id,
+      {}
+    );
+  }
+
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + 'members/delete-photo/' + photoId);
   }
 }

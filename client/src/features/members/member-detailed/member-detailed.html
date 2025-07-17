@@ -39,8 +39,9 @@
       <h3 class="card-title text-3xl text-primary">{{ title() }}</h3>
       @if(isCurrentUser()){
       <button
-        (click)="memberService.editMode.set(!memberService.editMode())"
+        (click)="onCancelClicked()"
         class="btn btn-outline btn-primary"
+        [disabled]="memberService.loading()"
       >
         {{ memberService.editMode() ? "Cancel" : "Edit Profile" }}
       </button>
