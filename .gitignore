@@ -79,3 +79,4 @@ typings/
 # =========================
 API/Dating.*
 ssl/
+API/appsettings.json
