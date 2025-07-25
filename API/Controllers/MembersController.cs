@@ -32,7 +32,7 @@ namespace API.Controllers
         public async Task<ActionResult<IReadOnlyList<Photo>>> GetPhotosByMemberId(string memberId)
         {
             var photos = await memberRepository.GetPhotosByMemberIdAsync(memberId);
-            return photos.Count > 0 ? Ok(photos) : NotFound();
+            return Ok(photos);
         }
 
         [HttpPut]
