@@ -44,7 +44,11 @@ jobs:
         run: |
           rm -rf API/wwwroot
           mkdir -p API/wwwroot
-          cp -r client/dist/client/* API/wwwroot/
+          if [ -d client/dist/client/browser ]; then
+            cp -r client/dist/client/browser/* API/wwwroot/
+          else
+            cp -r client/dist/client/* API/wwwroot/
+          fi
 
       - name: Publish backend
         run: dotnet publish API/API.csproj -c Release -o publish
