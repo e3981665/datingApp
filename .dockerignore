@@ -1,0 +1,12 @@
+.git
+.github
+**/bin
+**/obj
+**/node_modules
+**/.angular
+**/dist
+**/*.user
+**/*.suo
+**/*.cache
+**/*.log
+**/App_Data
