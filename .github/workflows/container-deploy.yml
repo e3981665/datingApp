@@ -53,6 +53,10 @@ jobs:
 
       - name: Deploy to ACI
         run: |
+          az container delete \
+            --name ${{ env.ACI_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --yes || true
           az container create \
             --name ${{ env.ACI_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
