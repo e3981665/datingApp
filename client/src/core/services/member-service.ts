@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { EditableMember, Member, Photo } from '../../types/member';
-import { tap } from 'rxjs';
+import { PaginatedResult } from '../../types/pagination';
+import { map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,9 @@ export class MemberService {
   public cancelClicked = signal(false);
 
   getMembers() {
-    return this.http.get<Member[]>(this.baseUrl + 'members');
+    return this.http.get<PaginatedResult<Member>>(this.baseUrl + 'members').pipe(
+      map((result) => result.items ?? [])
+    );
   }
 
   getMemberById(id: string) {
