@@ -13,9 +13,8 @@ env:
   REGISTRY: datingappirc.azurecr.io
   ACR_NAME: datingappirc
   IMAGE_NAME: datingapp
-  RESOURCE_GROUP: datingapp
-  ACI_NAME: datingapp-aci
-  CONTAINER_PORT: 80
+  APP_NAME: datingapp-container
+  RESOURCE_GROUP: datingapp-container_group
 
 jobs:
   build-and-deploy:
@@ -44,36 +43,10 @@ jobs:
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$IMAGE_TAG
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-      - name: Fetch ACR credentials
+      - name: Deploy to App Service (container)
         run: |
-          ACR_USER=$(az acr credential show -n ${{ env.ACR_NAME }} --query username -o tsv)
-          ACR_PASS=$(az acr credential show -n ${{ env.ACR_NAME }} --query passwords[0].value -o tsv)
-          echo "ACR_USER=$ACR_USER" >> $GITHUB_ENV
-          echo "ACR_PASS=$ACR_PASS" >> $GITHUB_ENV
-
-      - name: Deploy to ACI
-        run: |
-          az container delete \
-            --name ${{ env.ACI_NAME }} \
+          az webapp config container set \
+            --name ${{ env.APP_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --yes || true
-          az container create \
-            --name ${{ env.ACI_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
-            --os-type Linux \
-            --cpu 1 \
-            --memory 1 \
-            --restart-policy Always \
-            --ip-address Public \
-            --ports ${{ env.CONTAINER_PORT }} \
-            --environment-variables \
-              ASPNETCORE_URLS=http://+:80 \
-              TokenKey=${{ secrets.TOKEN_KEY }} \
-              ConnectionStrings__DefaultConnection="Data Source=/app/datingapp.db" \
-              CloudinarySettings__CloudName=${{ secrets.CLOUDINARY_CLOUD_NAME }} \
-              CloudinarySettings__ApiKey=${{ secrets.CLOUDINARY_API_KEY }} \
-              CloudinarySettings__ApiSecret=${{ secrets.CLOUDINARY_API_SECRET }} \
-            --registry-login-server ${{ env.REGISTRY }} \
-            --registry-username ${{ env.ACR_USER }} \
-            --registry-password ${{ env.ACR_PASS }}
+            --docker-custom-image-name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
+            --docker-registry-server-url https://${{ env.REGISTRY }}
