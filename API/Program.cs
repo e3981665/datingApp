@@ -37,12 +37,19 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(policy =>
     policy.AllowAnyHeader()
           .AllowAnyMethod()
-          .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+          .WithOrigins(
+              "http://localhost:4200",
+              "https://localhost:4200",
+              "https://datingapp-test-gacxb3hchafph6ah.canadacentral-01.azurewebsites.net"));
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 using (var scope = app.Services.CreateScope())
 {
