@@ -48,5 +48,5 @@ jobs:
           az webapp config container set \
             --name ${{ env.APP_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --docker-custom-image-name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
-            --docker-registry-server-url https://${{ env.REGISTRY }}
+            --container-image-name ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
+            --container-registry-url https://${{ env.REGISTRY }}
